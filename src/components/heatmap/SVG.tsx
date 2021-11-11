@@ -14,7 +14,6 @@ export type HeatMapValue = {
 };
 
 export type HeatMapSettings = {
-  darkMode: boolean;
   rectSize: number;
   legendCellSize: number;
   space: number;
@@ -79,7 +78,7 @@ export default function SVG(props: SVGProps) {
   }, [monthLabels]);
 
   const initStartDate = useMemo(() => {
-      // need the grid to start on the first dat of the week
+      // need the grid to start on the first day of the week (i.e. Sunday)
       return startOfDay(startOfWeek(startDate));
   }, [startDate]);
 

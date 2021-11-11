@@ -58,7 +58,6 @@ runExtension(ID, () => {
       let query: string[] = [];
       let legend: Record<number, string> = {};
       let settings: HeatMapSettings = {
-        darkMode: false,
         rectSize: 11,
         space: 2,
         legendCellSize: 11,
@@ -79,9 +78,6 @@ runExtension(ID, () => {
       }
       let displayNode = tree.children.find((c) => DISPLAY === c.text);
       if (displayNode) {
-        displayNode.children
-          .find((c) => DISPLAY_DARK === c.text)
-          ?.children.every((c) => (settings.darkMode = (c.text == "true")));
         displayNode.children
           .find((c) => DISPLAY_RECT_SIZE === c.text)
           ?.children.every((c) => (settings.rectSize = parseInt(c.text)));

@@ -55,15 +55,10 @@ const Heatmap = ({
 }): JSX.Element => {
   const weekCount = differenceInWeeks(endDate, startDate) + 1;
   const width = weekCount * (settings.rectSize + settings.space * 2);
-  const [enableDark, setEnableDark] = useState(settings.darkMode);
 
   return (
     <div>
       <HeatMap
-        style={{
-          backgroundColor: enableDark ? "#000" : "#fff",
-          color: enableDark ? "#888" : "#000",
-        }}
         value={getPageCalData(query, startDate, endDate)}
         startDate={startDate}
         endDate={endDate}
