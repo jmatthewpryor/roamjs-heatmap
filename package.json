@@ -1,11 +1,12 @@
 {
   "name": "heatmap",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Roam JS Heatmap Extension",
   "main": "./build/main.js",
   "scripts": {
     "build": "roamjs-scripts build",
-    "dev": "roamjs-scripts dev"
+    "dev": "roamjs-scripts dev",
+    "publish": "roamjs-scripts publish"
   },
   "license": "MIT",
   "devDependencies": {

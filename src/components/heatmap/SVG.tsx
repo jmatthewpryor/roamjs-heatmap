@@ -5,12 +5,19 @@ import { LabelsMonth } from './LabelsMonth';
 import { Rect } from './Rect';
 import { formatData, getDateToString, existColor, numberSort } from './utils';
 import Legend, { LegendProps } from './Legend';
-import { compareAsc, startOfDay, addDays } from 'date-fns';
+import { compareAsc, startOfDay, addDays, startOfWeek } from 'date-fns';
 
 export type HeatMapValue = {
   date: string;
   content: string | string[] | React.ReactNode;
   count: number;
+};
+
+export type HeatMapSettings = {
+  darkMode: boolean;
+  rectSize: number;
+  legendCellSize: number;
+  space: number;
 };
 
 export type RectProps<T = SVGRectElement> = React.SVGProps<T>;
@@ -72,7 +79,8 @@ export default function SVG(props: SVGProps) {
   }, [monthLabels]);
 
   const initStartDate = useMemo(() => {
-      return startOfDay(startDate);
+      // need the grid to start on the first dat of the week
+      return startOfDay(startOfWeek(startDate));
   }, [startDate]);
 
   return (
@@ -112,7 +120,7 @@ export default function SVG(props: SVGProps) {
                     x: idx * (rectSize + space),
                     y: (rectSize + space) * cidx,
                   };
-                  const currentDate = addDays(initStartDate, (idx * 7 + (cidx - 1)) || 0);
+                  const currentDate = addDays(initStartDate, (idx * 7 + cidx));
                   const date = getDateToString(currentDate);
                   const dataProps = {
                     ...data[date],
