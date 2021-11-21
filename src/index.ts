@@ -127,6 +127,11 @@ runExtension(ID, () => {
         config.range.startDate = subDays(config.range.endDate, config.range.days);
       }
       
+      // make sure the query refs are an array, not just a single string
+      if (typeof config.query?.refs === "string") {
+        config.query.refs = [config.query.refs];
+      }
+
       console.log(`FINAL CONFIG: `, config);
 
       renderHeatmap(

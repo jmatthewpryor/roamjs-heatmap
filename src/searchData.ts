@@ -56,7 +56,7 @@ export function getPageCalData(pages: string[], startDate: Date, endDate: Date):
     )
     .flat();
 
-    refs.push(pages
+    /*refs.push(pages
     .map((page) =>
       window.roamAlphaAPI.q(`
       [:find 
@@ -66,7 +66,7 @@ export function getPageCalData(pages: string[], startDate: Date, endDate: Date):
             [?ref :node/title "${page}"]
             [?block :block/refs ?source]]`)
     ) 
-    .flat());
+    .flat());*/
     
   const dates = refs
     .map((n) => getPageName(n[0]))
