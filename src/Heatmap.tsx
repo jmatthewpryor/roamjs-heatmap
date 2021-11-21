@@ -1,5 +1,5 @@
 import * as ReactDOM from "react-dom";
-import HeatMap, { HeatMapSettings, HeatMapValue } from "./components/heatmap";
+import HeatMap, { HeatMapSettings, HeatMapValue, LEFT_PAD, TOP_PAD } from "./components/heatmap";
 import { getDateFromString } from "./components/heatmap/utils";
 import * as React from "react";
 import { getPageCalData } from "./searchData";
@@ -39,44 +39,29 @@ const TooltipContent = ({
 };
 
 const Heatmap = ({
-  query,
-  startDate,
-  endDate,
-  legend,
   settings,
   blockUid,
 }: {
-  query: string[];
-  startDate: Date;
-  endDate: Date;
-  legend: Record<number, string>;
   settings: HeatMapSettings;
   blockUid: string;
 }): JSX.Element => {
-  const weekCount = differenceInWeeks(endDate, startDate) + 1;
-  const width = weekCount * (settings.rectSize + settings.space * 2);
+  const weekCount = Math.max(settings.display.legend.length, differenceInWeeks(settings.range.endDate, settings.range.startDate, {roundingMethod: "ceil"}) + 1);
+  const width = (weekCount * (settings.display.rectSize + settings.display.space )) + LEFT_PAD;
+  const height = (7 * (settings.display.rectSize + settings.display.space)) + (settings.display.rectSize + (settings.display.space * 4)) + TOP_PAD;
 
   return (
     <div>
       <HeatMap
-        value={getPageCalData(query, startDate, endDate)}
-        startDate={startDate}
-        endDate={endDate}
-        rectSize={settings.rectSize}
-        legendCellSize={settings.legendCellSize}
-        space={settings.space}
+        prefixCls={settings.display.prefixCls}
+        value={getPageCalData(settings.query.refs, settings.range.startDate, settings.range.endDate)}
+        startDate={settings.range.startDate}
+        endDate={settings.range.endDate}
+        rectSize={settings.display.rectSize}
+        legendCellSize={settings.display.legendCellSize}
+        space={settings.display.space}
         width={width}
-        panelColors={
-          Object.keys(legend).length
-            ? legend
-            : {
-                0: "#EBEDF0",
-                4: "#C6E48B",
-                8: "#7BC96F",
-                12: "#239A3B",
-                32: "#196127",
-              }
-        }
+        height={height}
+        legend={settings.display.legend}        
         rectRender={(props, data) => (
           /* if (!data.count) return <rect {...props} />;*/ <Tooltip
             key={props.key}
@@ -103,22 +88,14 @@ const Heatmap = ({
 };
 
 export const renderHeatmap = (
-  query: string[],
-  startDate: Date,
-  endDate: Date,
-  blockUid: string,
-  legend: Record<number, string>,
   settings: HeatMapSettings,
+  blockUid: string,
   p: HTMLElement
 ): void => {
   ReactDOM.render(
     <Heatmap
-      startDate={startDate}
-      blockUid={blockUid}
-      endDate={endDate}
-      query={query}
-      legend={legend}
       settings={settings}
+      blockUid={blockUid}
     />,
     p
   );

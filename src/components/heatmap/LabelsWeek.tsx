@@ -14,7 +14,7 @@ export const LabelsWeek = ({ weekLabels = [], rectSize = 0, topPad = 0, space = 
         {[...Array(7)].map((_, idx) => {
           if (weekLabels && weekLabels[idx]) {
             return (
-              <text key={idx} x={15} y={topPad} dy={(idx + 1) * (rectSize + space) - 5}>
+              <text key={idx} x={15} y={topPad} dy={(idx + 1) * (rectSize + space) - (rectSize+space) / 2}>
                 {weekLabels[idx]}
               </text>
             );

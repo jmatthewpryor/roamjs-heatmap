@@ -38,14 +38,14 @@ export function numberSort(keys: number[] = []) {
   });
 }
 
-export function existColor(num: number = 0, nums: number[], panelColors: Record<number, string> = {}) {
-  let color = '';
+export function findLegendBand(num: number = 0, nums: number[]): number {
+  let band = 0;
   for (let a = 0; a < nums.length; a += 1) {
     if (nums[a] >= num) {
-      color = panelColors[nums[a]];
+      band = nums[a];
       break;
     }
-    color = panelColors[nums[a]];
+    band = nums[a];
   }
-  return color;
+  return band;
 }

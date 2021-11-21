@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { LabelsWeek } from './LabelsWeek';
 import { LabelsMonth } from './LabelsMonth';
 import { Rect } from './Rect';
-import { formatData, getDateToString, existColor, numberSort } from './utils';
+import { formatData, getDateToString, findLegendBand, numberSort } from './utils';
 import Legend, { LegendProps } from './Legend';
 import { compareAsc, startOfDay, addDays, startOfWeek } from 'date-fns';
 
@@ -13,15 +13,11 @@ export type HeatMapValue = {
   count: number;
 };
 
-export type HeatMapSettings = {
-  rectSize: number;
-  legendCellSize: number;
-  space: number;
-};
 
 export type RectProps<T = SVGRectElement> = React.SVGProps<T>;
 
 export interface SVGProps extends React.SVGProps<SVGSVGElement> {
+  prefixCls?: string;
   startDate?: Date;
   endDate?: Date;
   rectSize?: number;
@@ -40,11 +36,15 @@ export interface SVGProps extends React.SVGProps<SVGSVGElement> {
   value?: Array<HeatMapValue>;
   weekLabels?: string[] | false;
   monthLabels?: string[] | false;
-  panelColors?: Record<number, string>;
+  legend?: number[];
 }
+
+export const LEFT_PAD = 28;
+export const TOP_PAD = 20;
 
 export default function SVG(props: SVGProps) {
   const {
+    prefixCls = 'roamjs-heatmap',
     rectSize = 11,
     legendCellSize = 11,
     space = 2,
@@ -56,14 +56,14 @@ export default function SVG(props: SVGProps) {
     value = [],
     weekLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    panelColors = { 0: '#EBEDF0', 8: '#7BC96F', 4: '#C6E48B', 12: '#239A3B', 32: '#196127' },
+    legend = [0, 4, 8, 12, 32],
     ...other
   } = props || {};
   const [gridNum, setGridNum] = useState(0);
-  const [leftPad, setLeftPad] = useState(!!weekLabels ? 28 : 5);
-  const [topPad, setTopPad] = useState(!!monthLabels ? 20 : 5);
+  const [leftPad, setLeftPad] = useState(!!weekLabels ? LEFT_PAD : 5);
+  const [topPad, setTopPad] = useState(!!monthLabels ? TOP_PAD : 5);
   const svgRef = React.createRef<SVGSVGElement>();
-  const nums = useMemo(() => numberSort(Object.keys(panelColors).map((item) => parseInt(item, 10))), [panelColors]);
+  const nums = useMemo(() => numberSort(legend), [legend]);
   const data = useMemo(() => formatData(value), [value]);
   useEffect(() => setLeftPad(!!weekLabels ? 28 : 5), [weekLabels]);
   useEffect(() => {
@@ -87,7 +87,8 @@ export default function SVG(props: SVGProps) {
       {legendCellSize !== 0 && (
         <Legend
           legendRender={legendRender}
-          panelColors={panelColors}
+          prefixCls={prefixCls}
+          legend={legend}
           rectSize={rectSize}
           legendCellSize={legendCellSize}
           leftPad={leftPad}
@@ -132,10 +133,12 @@ export default function SVG(props: SVGProps) {
                   if (endDate instanceof Date && compareAsc(currentDate, endDate) > 0 ) {
                     return null;
                   }
-                  if (date && data[date] && panelColors && Object.keys(panelColors).length > 0) {
-                    dayProps.fill = existColor(data[date].count || 0, nums, panelColors);
-                  } else if (panelColors && panelColors[0]) {
-                    dayProps.fill = panelColors[0];
+                  if (date && data[date] && legend && legend.length > 0) {
+                    let band = findLegendBand(data[date].count || 0, nums);
+                    dayProps.className = `${prefixCls} legend-${band}`;
+
+                  } else if (legend && legend[0]) {
+                    dayProps.className = `${prefixCls} legend-${legend[0]}`;
                   }
                   if (rectRender && typeof rectRender === 'function') {
                     const elm = rectRender({ ...dayProps, key: cidx }, dataProps);

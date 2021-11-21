@@ -3,7 +3,8 @@ import { Rect, RectProps } from './Rect';
 import { SVGProps } from './SVG';
 
 export interface LegendProps extends RectProps {
-  panelColors: SVGProps['panelColors'];
+  prefixCls: SVGProps['prefixCls'];
+  legend: SVGProps['legend'];
   rectSize: SVGProps['rectSize'];
   leftPad: number;
   legendCellSize: number;
@@ -12,7 +13,8 @@ export interface LegendProps extends RectProps {
   space: number;
 }
 export default function Legend({
-  panelColors,
+  prefixCls,
+  legend,
   leftPad = 0,
   topPad = 0,
   space = 0,
@@ -25,13 +27,13 @@ export default function Legend({
   return useMemo(
     () => (
       <Fragment>
-        {Object.keys(panelColors || {}).map((num, key) => {
+        {legend.map((num, key) => {
           const rectProps = {
             ...props,
             key,
-            x: (size + 1) * key + leftPad,
-            y: topPad + rectSize * 8 + 6,
-            fill: panelColors![Number(num)],
+            x: (size + space) * key + leftPad,
+            y: topPad + rectSize * 8 + (space * 4),
+            class: `${prefixCls} legend-${num}`,
             width: size,
             height: size,
           };
@@ -40,6 +42,6 @@ export default function Legend({
         })}
       </Fragment>
     ),
-    [panelColors, props, size, leftPad, topPad, rectSize, legendRender],
+    [legend, props, size, leftPad, topPad, rectSize, legendRender],
   );
 }

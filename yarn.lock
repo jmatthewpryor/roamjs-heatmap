@@ -905,7 +905,7 @@
     "core-js-pure" "^3.19.0"
     "regenerator-runtime" "^0.13.4"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@>=7.10.0":
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
   "integrity" "sha512-Nht8L0O8YCktmsDV6FqFue7vQLRx3Hb0B37lS5y0jDRqRxlBG4wIJHnf9/bgSE2UyipKFA01YtS+npRdTWBUyw=="
   "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.16.0.tgz"
   "version" "7.16.0"
@@ -1089,11 +1089,6 @@
   "integrity" "sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ=="
   "resolved" "https://registry.npmjs.org/@types/unist/-/unist-2.0.6.tgz"
   "version" "2.0.6"
-
-"@uiw/react-heat-map@^2.0.0":
-  "integrity" "sha512-LcH0bUFTfwcQTd7+W++dQwdEoh3HURs2+h2rSFOE7+/C8uLNMyPkVD40YF2jbCySvbSwR0i+mZaahPfJ/lNhGA=="
-  "resolved" "https://registry.npmjs.org/@uiw/react-heat-map/-/react-heat-map-2.0.0.tgz"
-  "version" "2.0.0"
 
 "@uiw/react-overlay-trigger@^4.9.7":
   "integrity" "sha512-PDP48H9/yYoxRKH/xHUr6ib1rpl/3ogXTpscEJo0U2XFGPsxRM2MLma/Pr2gB5f542PeBPux2H6mEtucFZMSVA=="
@@ -5685,6 +5680,11 @@
   "integrity" "sha1-y99WD9e5r2MlAv7UD5GMFX6pcTc="
   "resolved" "https://registry.npmjs.org/traverse/-/traverse-0.6.6.tgz"
   "version" "0.6.6"
+
+"ts-deepmerge@^1.1.0":
+  "integrity" "sha512-VvwaV/6RyYMwT9d8dClmfHIsG2PCdm6WY430QKOIbPRR50Y/1Q2ilp4i2XEZeHFcNqfaYnAQzpyUC6XA0AqqBg=="
+  "resolved" "https://registry.npmjs.org/ts-deepmerge/-/ts-deepmerge-1.1.0.tgz"
+  "version" "1.1.0"
 
 "ts-loader@^9.2.1":
   "integrity" "sha512-QMTC4UFzHmu9wU2VHZEmWWE9cUajjfcdcws+Gh7FhiO+Dy0RnR1bNz0YCHqhI0yRowCE9arVnNxYHqELOy9Hjw=="
