@@ -65,7 +65,9 @@ export default function SVG(props: SVGProps) {
   const svgRef = React.createRef<SVGSVGElement>();
   const nums = useMemo(() => numberSort(legend), [legend]);
   const data = useMemo(() => formatData(value), [value]);
-  useEffect(() => setLeftPad(!!weekLabels ? 28 : 5), [weekLabels]);
+  useEffect(() => {
+    setLeftPad(!!weekLabels ? 28 : 5)
+  }, [weekLabels]);
   useEffect(() => {
     if (svgRef.current) {
       const width = svgRef.current.clientWidth - leftPad || 0;

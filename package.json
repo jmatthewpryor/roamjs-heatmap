@@ -1,6 +1,6 @@
 {
   "name": "heatmap",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Roam JS Heatmap Extension",
   "main": "./build/main.js",
   "scripts": {
