@@ -17,6 +17,7 @@ export type HeatMapValue = {
 export type RectProps<T = SVGRectElement> = React.SVGProps<T>;
 
 export interface SVGProps extends React.SVGProps<SVGSVGElement> {
+  debug?: boolean;
   prefixCls?: string;
   startDate?: Date;
   endDate?: Date;

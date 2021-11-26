@@ -53,7 +53,7 @@ const Heatmap = ({
     <div>
       <HeatMap
         prefixCls={settings.display.prefixCls}
-        value={getPageCalData(settings.query.refs, settings.range.startDate, settings.range.endDate)}
+        value={getPageCalData(settings.query.refs, settings.range.startDate, settings.range.endDate, settings.debug)}
         startDate={settings.range.startDate}
         endDate={settings.range.endDate}
         rectSize={settings.display.rectSize}

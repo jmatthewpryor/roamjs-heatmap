@@ -18,6 +18,7 @@ export interface HeatMapSettings {
     startDate?: Date;
     endDate?: Date;
   }
+  debug?: boolean;
 }
 
 export * from './SVG';

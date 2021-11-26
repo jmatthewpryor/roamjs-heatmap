@@ -37,6 +37,14 @@ function isNumeric(str: any) {
   return isNaN(Number(str)) ? false : true;
 }
 
+function isBoolean(str: any){
+  return (/true/i).test(str)? true: (/false/i).test(str)? true: false;
+}
+
+function parseBoolean(str: any){
+  return (/true/i).test(str)? true: (/false/i).test(str)? false: undefined;
+}
+
 function isValidDate(d: Date) {
   return d instanceof Date && !isNaN(d.getTime());
 }
@@ -44,7 +52,7 @@ type Options = {
   [key: string]: any
 }
 
-function parseConfig( tree: TreeNode): Options | string[] | string | number[] | number | undefined {
+function parseConfig( tree: TreeNode): Options | string[] | string | number[] | number | boolean | undefined {
   const obj: Options = {};
   if (tree.children && tree.children.length > 0) {
     tree.children.forEach(child => {
@@ -55,7 +63,7 @@ function parseConfig( tree: TreeNode): Options | string[] | string | number[] | 
     if (Object.keys(obj).filter((key) => obj[key] !== undefined).length == 0) {
       let result = Object.keys(obj);
       result = result.map((key) => key.replace("[[", "").replace("]]", ""));
-      let result1 = result.map((key) => isNumeric(key) ? parseInt(key) : isValidDate(parseRoamDate(key)) ? parseRoamDate(key) : key);
+      let result1 = result.map((key) => isNumeric(key) ? parseInt(key) : isValidDate(parseRoamDate(key)) ? parseRoamDate(key) : isBoolean(key)? parseBoolean(key): key);
       return result1.length > 1 ? result1 : result1[0];
     }
     return obj;
@@ -140,7 +148,8 @@ runExtension(ID, () => {
         },
         range: {
           days: 365,
-        }
+        },
+        debug: false
       };
 
       let tree = getTreeByBlockUid(blockUid);
@@ -170,6 +179,10 @@ runExtension(ID, () => {
       // make sure the query refs are an array, not just a single string
       if (typeof config.query?.refs === "string") {
         config.query.refs = [config.query.refs];
+      }
+
+      if (config.debug) {
+        console.log("CONFIG:", config);
       }
 
       renderHeatmap(

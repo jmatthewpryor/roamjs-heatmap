@@ -33,7 +33,7 @@ export default function Legend({
             key,
             x: (size + space) * key + leftPad,
             y: topPad + rectSize * 8 + (space * 4),
-            class: `${prefixCls} legend-${num}`,
+            className: `${prefixCls} legend-${num}`,
             width: size,
             height: size,
           };
