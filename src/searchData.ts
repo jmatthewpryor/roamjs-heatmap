@@ -59,7 +59,10 @@ export function getPageCalData(pages: string[], startDate: Date, endDate: Date, 
     )
     .flat();
     
-  if (refs?.length) {
+    if (debug) {
+      console.log("getPageCalData>", "Refs:", refs);
+    }
+    if (refs?.length) {
       const dates = refs
       .map((n) => getPageName(n[0], debug))
       .filter(isDatePage)
