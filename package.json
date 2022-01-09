@@ -6,6 +6,7 @@
   "scripts": {
     "build": "roamjs-scripts build",
     "dev": "roamjs-scripts dev",
+    "local-dev": "/Users/jmatthewpryor/proj/roamresearch/roamjs-scripts/dist/index.js dev",
     "publish": "roamjs-scripts publish"
   },
   "license": "MIT",

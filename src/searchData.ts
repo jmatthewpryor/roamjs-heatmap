@@ -1,38 +1,21 @@
 import { HeatMapValue } from './components/heatmap';
+import { isValidDate } from './components/heatmap/utils';
 import { addDays, differenceInDays, format } from 'date-fns'
 import {parseRoamDate} from 'roam-client';
 
 function isDatePage(name: string) {
   if (!name) return false;
-  return name.match(/^\w+\s\d\d?..,\s\d\d\d\d$/);
+  return isValidDate(parseRoamDate(name));
 }
 
 function parseDatePage(name: string) {
   if (!isDatePage(name)) return null;
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  const dateParts = name.split(" ");
-  const month = months.indexOf(dateParts[0]);
-  const day = parseInt(dateParts[1].substring(0, dateParts[1].length - 2), 10);
-  const year = parseInt(dateParts[2], 10);
-  return new Date(year, month, day);
+  return parseRoamDate(name);
 }
 
 function getPageName(node: any, debug: boolean=false): string {
   if (debug) {
-    console.log("getPageName>", "Node:", node);
+    console.log("HEATMAP> getPageName>", "Node:", node);
   }
   if (node?.title) {
     return node.title;
@@ -50,6 +33,10 @@ export function getPageCalData(pages: string[], startDate: Date, endDate: Date, 
     values.push({ date: format(addDays(startDate, i), 'yyyy/MM/dd'), count: 0, content: '' },);
   }
   
+  if (debug) {
+    console.log("HEATMAP> getPageCalData>", "Pages:", pages);
+  }
+
   const refs = pages
     .map((page) =>
       window.roamAlphaAPI.q(`
@@ -60,7 +47,7 @@ export function getPageCalData(pages: string[], startDate: Date, endDate: Date, 
     .flat();
     
     if (debug) {
-      console.log("getPageCalData>", "Refs:", refs);
+      console.log("HEATMAP> getPageCalData>", "Refs:", refs);
     }
     if (refs?.length) {
       const dates = refs

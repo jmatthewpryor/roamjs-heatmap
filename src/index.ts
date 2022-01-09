@@ -14,6 +14,7 @@ import { renderHeatmap } from "./Heatmap";
 import { addDays, subDays, parse, differenceInDays, startOfDay, endOfDay } from "date-fns";
 import merge from "ts-deepmerge";
 import { HeatMapSettings } from "./components/heatmap";
+import { isValidDate } from "./components/heatmap/utils";
 
 const ID = "heatmap";
 const RANGE = "range";
@@ -31,8 +32,6 @@ const DISPLAY_LEGEND_CELL_SIZE = "legendCellSize";
 
 const CONFIG = toConfig(ID);
 
-const getKeyValue = <T, K extends keyof T>(obj: T, key: K): T[K] => obj[key];
-
 function isNumeric(str: any) {
   return isNaN(Number(str)) ? false : true;
 }
@@ -45,9 +44,6 @@ function parseBoolean(str: any){
   return (/true/i).test(str)? true: (/false/i).test(str)? false: undefined;
 }
 
-function isValidDate(d: Date) {
-  return d instanceof Date && !isNaN(d.getTime());
-}
 type Options = {
   [key: string]: any
 }
@@ -182,7 +178,7 @@ runExtension(ID, () => {
       }
 
       if (config.debug) {
-        console.log("CONFIG:", config);
+        console.log("HEATMAP> CONFIG:", config);
       }
 
       renderHeatmap(
