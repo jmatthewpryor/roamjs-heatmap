@@ -49,6 +49,10 @@ const Heatmap = ({
   const width = (weekCount * (settings.display.rectSize + settings.display.space )) + LEFT_PAD;
   const height = (7 * (settings.display.rectSize + settings.display.space)) + (settings.display.rectSize + (settings.display.space * 4)) + TOP_PAD;
 
+  if (settings.debug) {
+    console.log("HEATMAP>", settings);
+    console.dir(settings);
+  }
   return (
     <div>
       <HeatMap

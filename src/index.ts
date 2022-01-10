@@ -53,7 +53,7 @@ function parseConfig( tree: TreeNode): Options | string[] | string | number[] | 
   if (tree.children && tree.children.length > 0) {
     tree.children.forEach(child => {
       if (child.text) {
-        obj[child.text] = parseConfig(child);
+        obj[child.text.trim()] = parseConfig(child);
       }
     });
     if (Object.keys(obj).filter((key) => obj[key] !== undefined).length == 0) {
