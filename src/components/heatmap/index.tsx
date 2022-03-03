@@ -12,6 +12,7 @@ export interface HeatMapSettings {
     legendCellSize?: number;
     prefixCls?: string;
     legend?: number[];
+    weekStartsOn?: number;
   };
   range?: {
     days?: number;

@@ -1,6 +1,8 @@
 import React, { Fragment, useMemo } from 'react';
 import { Rect, RectProps } from './Rect';
 import { SVGProps } from './SVG';
+import Tooltip from "@uiw/react-tooltip";
+import { TooltipContent } from "./tooltip";
 
 export interface LegendProps extends RectProps {
   prefixCls: SVGProps['prefixCls'];
@@ -33,14 +35,26 @@ export default function Legend({
             key,
             x: (size + space) * key + leftPad,
             y: topPad + rectSize * 8 + (space * 4),
-            className: `${prefixCls} legend-${num}`,
+            className: `${prefixCls} legend-${key}`,
             width: size,
             height: size,
           };
           if (legendRender) return legendRender(rectProps);
-          return <Rect {...rectProps} />;
+          return (
+            <Tooltip
+            key={rectProps.key}
+            placement="top"
+            content={TooltipContent({
+              date: "WOW",
+              count: num || 0,
+            })}
+            delay={300}
+          >
+            <Rect {...rectProps} />
+          </Tooltip>);
         })}
       </Fragment>
+      
     ),
     [legend, props, size, leftPad, topPad, rectSize, legendRender],
   );

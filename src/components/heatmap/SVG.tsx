@@ -21,6 +21,7 @@ export interface SVGProps extends React.SVGProps<SVGSVGElement> {
   prefixCls?: string;
   startDate?: Date;
   endDate?: Date;
+  weekStartsOn?: number;
   rectSize?: number;
   legendCellSize?: number;
   space?: number;
@@ -48,6 +49,7 @@ export default function SVG(props: SVGProps) {
     prefixCls = 'roamjs-heatmap',
     rectSize = 11,
     legendCellSize = 11,
+    weekStartsOn = 0,
     space = 2,
     startDate = new Date(),
     endDate,
@@ -60,6 +62,9 @@ export default function SVG(props: SVGProps) {
     legend = [0, 4, 8, 12, 32],
     ...other
   } = props || {};
+  if (weekStartsOn>0) {
+    (weekLabels as string[]).push((weekLabels as string[]).shift());
+  }
   const [gridNum, setGridNum] = useState(0);
   const [leftPad, setLeftPad] = useState(!!weekLabels ? LEFT_PAD : 5);
   const [topPad, setTopPad] = useState(!!monthLabels ? TOP_PAD : 5);
@@ -82,7 +87,7 @@ export default function SVG(props: SVGProps) {
 
   const initStartDate = useMemo(() => {
       // need the grid to start on the first day of the week (i.e. Sunday)
-      return startOfDay(startOfWeek(startDate));
+      return startOfDay(startOfWeek(startDate, {weekStartsOn: weekStartsOn == 0? 0: 1}));
   }, [startDate]);
 
   return (

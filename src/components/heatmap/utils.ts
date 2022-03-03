@@ -42,10 +42,10 @@ export function findLegendBand(num: number = 0, nums: number[]): number {
   let band = 0;
   for (let a = 0; a < nums.length; a += 1) {
     if (nums[a] >= num) {
-      band = nums[a];
+      band = a;
       break;
     }
-    band = nums[a];
+    band = a;
   }
   return band;
 }

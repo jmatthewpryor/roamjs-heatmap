@@ -7,36 +7,8 @@ import { differenceInWeeks } from "date-fns";
 import { toRoamDateUid, toRoamDate } from "roam-client";
 import Tooltip from "@uiw/react-tooltip";
 import { useState } from "react";
+import { TooltipContent } from "./components/heatmap/tooltip";
 
-const containerStyle = {
-  display: "flex",
-  flexFlow: "column wrap",
-  justifyContent: "center",
-  alignContent: "center",
-  listStyle: "none",
-};
-
-const itemStyle = {
-  padding: "1px",
-  alignSelf: "center",
-};
-
-const TooltipContent = ({
-  date,
-  count,
-}: {
-  date: string;
-  count: number;
-}): JSX.Element => {
-  return (
-    <div style={containerStyle}>
-      <div style={itemStyle}>
-        <strong>{toRoamDate(getDateFromString(date))}</strong>
-      </div>
-      <div style={itemStyle}>{count || 0}</div>
-    </div>
-  );
-};
 
 const Heatmap = ({
   settings,
@@ -60,6 +32,7 @@ const Heatmap = ({
         value={getPageCalData(settings.query.refs, settings.range.startDate, settings.range.endDate, settings.debug)}
         startDate={settings.range.startDate}
         endDate={settings.range.endDate}
+        weekStartsOn={settings.display.weekStartsOn}
         rectSize={settings.display.rectSize}
         legendCellSize={settings.display.legendCellSize}
         space={settings.display.space}
@@ -67,7 +40,7 @@ const Heatmap = ({
         height={height}
         legend={settings.display.legend}        
         rectRender={(props, data) => (
-          /* if (!data.count) return <rect {...props} />;*/ <Tooltip
+          <Tooltip
             key={props.key}
             placement="top"
             content={TooltipContent({

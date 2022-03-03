@@ -5,7 +5,7 @@
   "main": "./build/main.js",
   "scripts": {
     "build": "roamjs-scripts build",
-    "dev": "roamjs-scripts dev",
+    "dev": "roamjs-scripts dev --port 8001",
     "local-dev": "/Users/jmatthewpryor/proj/roamresearch/roamjs-scripts/dist/index.js dev",
     "publish": "roamjs-scripts publish"
   },

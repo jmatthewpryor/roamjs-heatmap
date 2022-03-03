@@ -96,17 +96,20 @@ addStyle(`
   .roamjs-heatmap .legend-0 {
     fill: #EBEDF0;
   }
-  .roamjs-heatmap .legend-4 {
+  .roamjs-heatmap .legend-1 {
     fill: #C6E48B;
   }
-  .roamjs-heatmap .legend-8  {
+  .roamjs-heatmap .legend-2  {
     fill: #7BC96F;
   }
-  .roamjs-heatmap .legend-12 {
+  .roamjs-heatmap .legend-3 {
     fill: #239A3B;
   }
-  .roamjs-heatmap .legend-32 {
-    fill: #196127;
+  .roamjs-heatmap .legend-4 {
+    fill: #268339;
+  }
+  .roamjs-heatmap .legend-5 {
+    fill: #052b0c;
   }
 `);
 
@@ -138,6 +141,7 @@ runExtension(ID, () => {
         display: {
           rectSize: 11,
           space: 2,
+          weekStartsOn: 0,
           legendCellSize: 11,
           prefixCls: "roamjs-heatmap",
           legend: [0, 4, 8, 12, 32],

@@ -8,60 +8,74 @@ function isDatePage(name: string) {
   return isValidDate(parseRoamDate(name));
 }
 
-function parseDatePage(name: string) {
-  if (!isDatePage(name)) return null;
-  return parseRoamDate(name);
-}
-
-function getPageName(node: any, debug: boolean=false): string {
-  if (debug) {
-    console.log("HEATMAP> getPageName>", "Node:", node);
-  }
-  if (node?.title) {
-    return node.title;
-  } else if (node?._children) {
-    return getPageName(node._children[0]);
-  }
-  return null;
-}
-
-export function getPageCalData(pages: string[], startDate: Date, endDate: Date, debug: boolean=false): HeatMapValue[] {
+export function getPageCalData(
+  pages: string[],
+  startDate: Date,
+  endDate: Date,
+  debug: boolean = false
+): HeatMapValue[] {
   const values: HeatMapValue[] = [];
   const dateRange = differenceInDays(endDate, startDate) + 3;
 
   for (let i = 0; i <= dateRange; i++) {
-    values.push({ date: format(addDays(startDate, i), 'yyyy/MM/dd'), count: 0, content: '' },);
+    values.push({
+      date: format(addDays(startDate, i), "yyyy/MM/dd"),
+      count: 0,
+      content: "",
+    });
   }
-  
+
   if (debug) {
     console.log("HEATMAP> getPageCalData>", "Pages:", pages);
   }
 
-  const refs = pages
-    .map((page) =>
-      window.roamAlphaAPI.q(`
-            [:find 
-                (pull ?block [:node/title {:block/_children ...}]) 
-                :where [?block :block/refs ?ref] [?ref :node/title "${page}"]]`)
-    )
-    .flat();
-    
+  pages.map((page) => {
+    let found = window.roamAlphaAPI.q(`
+      [:find ?page_title 
+          (pull ?block [:block/string :block/refs :block/page]) 
+          :where [?block :block/refs ?ref]
+            [?block :block/page ?page]
+            [?page :node/title ?page_title]
+            [?ref :node/title "${page}"]]`);
+
     if (debug) {
-      console.log("HEATMAP> getPageCalData>", "Refs:", refs);
+      console.log("HEATMAP> getPageCalData>", "Refs:", found);
     }
-    if (refs?.length) {
-      const dates = refs
-      .map((n) => getPageName(n[0], debug))
-      .filter(isDatePage)
-      .map(parseDatePage);
-    if (dates.length == 0) return values;
-    dates.forEach((d) => {
-      values.filter((v) => v.date == format(d, 'yyyy/MM/dd')).forEach((v) => {
-        v.count++;
-      });
-    });
-  }
+
+    if (found?.length) {
+      const dates = found
+        .filter((n) => isDatePage(n[0]))
+        .map((n) => {
+          const date = parseRoamDate(n[0]);
+          const blockContent = n[1].string;
+
+          const regex = new RegExp(
+            `#?\\[\\[(${page})\\]\\]|#(${page})|(${page})::(\\d+)`,
+            "g"
+          );
+
+          const iter = blockContent.matchAll(regex);
+          let matchAll = Array.from(iter);
+          let total = 0;
+          matchAll.forEach((m: any) => {
+            let tagIdx = m.findIndex((n: any) => n === page);
+            let count = 1;
+            if (m[tagIdx + 1]) {
+              count = parseInt(m[tagIdx + 1]);
+            }
+            total += count;
+          });
+          if (debug) {
+            console.log(`HEATMAP> getPageCalData> Page: ${page}`, "Date:", date, "Total:", total);
+          }      
+          values
+            .filter((v) => v.date == format(date, "yyyy/MM/dd"))
+            .forEach((v) => {
+              v.count += total;
+            });
+        });
+    }
+  });
+
   return values;
 }
-
-
